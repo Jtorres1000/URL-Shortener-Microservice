@@ -24,17 +24,7 @@ app.use('/api/shorturl', express.urlencoded({extended:true}))
 
 app.post('/api/shorturl', function(req, res) {
   inputUrl = req.body.url
-  console.log(inputUrl)
-
- const isValidUrl = (string) => {
-    try {
-     new URL(string);
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-
+  
   if (regex.test(inputUrl)) {
     urlcount++
     urlsRecord.push({
