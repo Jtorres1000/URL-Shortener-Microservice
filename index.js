@@ -18,6 +18,7 @@ app.get('/', function(req, res) {
 });
 let urlsRecord = [{}]
 let urlcount = 0;
+const regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
 // Your first API endpoint
 app.use('/api/shorturl', express.urlencoded({extended:true}))
 
@@ -34,7 +35,7 @@ app.post('/api/shorturl', function(req, res) {
     }
   }
 
-  if (isValidUrl(inputUrl)) {
+  if (regex.test(inputUrl)) {
     urlcount++
     urlsRecord.push({
       original_url:inputUrl,
@@ -44,11 +45,9 @@ app.post('/api/shorturl', function(req, res) {
       original_url:inputUrl,
       short_url:urlcount
     })
-  } else {
-    return res.json({
-      error:"Invalid URL"
-    })
-  }
+  } 
+
+  return res.json({error: 'invalid url'})
 });
 
 app.get('/api/shorturl/:id', (req, res) => {
